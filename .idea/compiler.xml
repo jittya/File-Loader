@@ -2,8 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="File-Loader.app" target="1.8" />
-      <module name="File-Loader.fileloader" target="1.8" />
+      <module name="File-Loader.app" target="12" />
+      <module name="File-Loader.fileloader" target="12" />
     </bytecodeTargetLevel>
   </component>
 </project>

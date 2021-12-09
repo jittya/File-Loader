@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 //publish to maven
 apply plugin: 'com.github.dcendents.android-maven'
-group='com.github.kk121'
+group='com.github.jittya'
 
 android {
     compileSdkVersion 28
