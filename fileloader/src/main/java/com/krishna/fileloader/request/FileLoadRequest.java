@@ -5,6 +5,9 @@ import android.support.annotation.IntDef;
 import com.krishna.fileloader.listener.FileRequestListener;
 import com.krishna.fileloader.utility.FileExtension;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by krishna on 12/10/17.
  */
@@ -32,6 +35,8 @@ public class FileLoadRequest {
     private boolean checkIntegrity;
     private String fileNamePrefix = "";
     private FileRequestListener requestListener;
+    private Map<String,String> customHeaders=new HashMap<String, String>();
+
 
     public FileLoadRequest(String uri, String directoryName, int directoryType, int fileType, Class requestClass, String fileExtension, boolean forceLoadFromNetwork, FileRequestListener listener) {
         this.uri = uri;
@@ -49,6 +54,14 @@ public class FileLoadRequest {
         this.autoRefresh = autoRefresh;
         this.checkIntegrity = checkIntegrity;
         this.fileNamePrefix = fileNamePrefix;
+    }
+
+    public FileLoadRequest(String uri, String directoryName, int directoryType, int fileType, Class requestClass, String fileExtension, boolean forceLoadFromNetwork, boolean autoRefresh, boolean checkIntegrity, FileRequestListener listener, String fileNamePrefix, Map<String,String> customHeaders) {
+        this(uri, directoryName, directoryType, fileType, requestClass, fileExtension, forceLoadFromNetwork, listener);
+        this.autoRefresh = autoRefresh;
+        this.checkIntegrity = checkIntegrity;
+        this.fileNamePrefix = fileNamePrefix;
+        this.customHeaders= customHeaders;
     }
 
     public FileLoadRequest(String uri, String directoryName, int directoryType) {
@@ -139,6 +152,11 @@ public class FileLoadRequest {
 
     public String getFileNamePrefix() {
         return fileNamePrefix;
+    }
+
+    public Map<String, String> getCustomHeader()
+    {
+        return customHeaders;
     }
 
     public void setFileNamePrefix(String fileNamePrefix) {

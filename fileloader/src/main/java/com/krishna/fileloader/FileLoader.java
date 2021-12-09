@@ -288,7 +288,7 @@ public class FileLoader {
                     if (loadedFile == null || !loadedFile.exists() || fileLoadRequest.isAutoRefresh()) {
                         //download from internet
                         publishProgress(STATUS_START_DOWNLOADING);
-                        FileDownloader downloader = new FileDownloader(context, fileLoadRequest.getUri(),fileLoadRequest.getFileNamePrefix(), fileLoadRequest.getDirectoryName(), fileLoadRequest.getDirectoryType());
+                        FileDownloader downloader = new FileDownloader(context, fileLoadRequest.getUri(),fileLoadRequest.getFileNamePrefix(), fileLoadRequest.getDirectoryName(), fileLoadRequest.getDirectoryType(),fileLoadRequest.getCustomHeader());
                         loadedFile = downloader.download(fileLoadRequest.isAutoRefresh(), fileLoadRequest.isCheckIntegrity());
                         publishProgress(STATUS_DOWNLOAD_END);
                     }

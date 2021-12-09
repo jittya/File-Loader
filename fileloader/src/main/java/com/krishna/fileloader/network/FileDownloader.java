@@ -4,16 +4,10 @@ import android.content.Context;
 import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
 import android.util.Log;
-
 import com.krishna.fileloader.BuildConfig;
 import com.krishna.fileloader.utility.AndroidFileManager;
 import com.krishna.fileloader.utility.MD5;
 import com.krishna.fileloader.utility.Utils;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -21,12 +15,20 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import okio.BufferedSink;
 import okio.Okio;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by krishna on 12/10/17.
  */
 
 public class FileDownloader {
     private static final String TAG = "FileDownloader";
+    private Map<String, String> customHeaders = new HashMap<String, String>();
     private String uri;
     private String dirName;
     private int dirType;
@@ -40,6 +42,16 @@ public class FileDownloader {
         this.dirName = dirName;
         this.dirType = dirType;
         this.fileNamePrefix = fileNamePrefix;
+        initHttpClient();
+    }
+
+    public FileDownloader(Context context, String uri, String fileNamePrefix, String dirName, int dirType, Map<String, String> customHeaders) {
+        this.context = context.getApplicationContext();
+        this.uri = uri;
+        this.dirName = dirName;
+        this.dirType = dirType;
+        this.fileNamePrefix = fileNamePrefix;
+        this.customHeaders = customHeaders;
         initHttpClient();
     }
 
@@ -62,6 +74,13 @@ public class FileDownloader {
     @WorkerThread
     public File download(boolean autoRefresh, boolean checkIntegrity) throws Exception {
         Request.Builder requestBuilder = new Request.Builder().url(uri);
+        if (customHeaders.size() > 0) {
+            Iterator<String> headerKeyIterator = customHeaders.keySet().iterator();
+            while (headerKeyIterator.hasNext()) {
+                String headerKey = headerKeyIterator.next();
+                requestBuilder.addHeader(headerKey, customHeaders.get(headerKey));
+            }
+        }
 
         //if auto-refresh is enabled then add header "If-Modified-Since" to the request and send last modified time of local file
         File downloadFilePath = AndroidFileManager.getFileForRequest(context, uri, fileNamePrefix, dirName, dirType);

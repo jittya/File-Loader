@@ -10,6 +10,8 @@ import com.krishna.fileloader.request.FileLoadRequest;
 import com.krishna.fileloader.utility.FileExtension;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by krishna on 15/10/17.
@@ -21,6 +23,7 @@ public class FileLoaderBuilder {
     private String directoryName = FileLoader.DEFAULT_DIR_NAME;
     private int directoryType = FileLoader.DEFAULT_DIR_TYPE;
     private String fileExtension = FileExtension.UNKNOWN;
+    private Map<String,String> customHeaders=new HashMap<String, String>();
 
     private FileRequestListener listener;
     @FileLoadRequest.ReturnFileType
@@ -44,6 +47,10 @@ public class FileLoaderBuilder {
 
     public FileLoaderBuilder load(String uri) {
         this.uri = uri;
+        return this;
+    }
+    public FileLoaderBuilder addHeader(String key,String value) {
+        this.customHeaders.put(key, value);
         return this;
     }
 
@@ -122,6 +129,6 @@ public class FileLoaderBuilder {
 
     private void buildFileLoader() {
         fileLoader = new FileLoader(context);
-        fileLoader.setFileLoadRequest(new FileLoadRequest(uri, directoryName, directoryType, returnFileType, requestClass, fileExtension, forceLoadFromNetwork, autoRefresh, checkIntegrity, listener, fileNamePrefix));
+        fileLoader.setFileLoadRequest(new FileLoadRequest(uri, directoryName, directoryType, returnFileType, requestClass, fileExtension, forceLoadFromNetwork, autoRefresh, checkIntegrity, listener, fileNamePrefix,customHeaders));
     }
 }
